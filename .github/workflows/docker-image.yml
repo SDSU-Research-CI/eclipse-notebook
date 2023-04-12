@@ -9,6 +9,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  BRANCH: ${{ github.ref_name }}
 
 jobs:
   build-and-publish:
@@ -34,10 +35,17 @@ jobs:
       with:
         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
+    - name: Tag latest if master branch
+      id: latest
+      if: ${{ env.BRANCH == 'master' }}
+      run: echo "tags=latest" >> $GITHUB_OUTPUT
+
     - name: Build and Push the Docker Image
       uses: docker/build-push-action@v4
       with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: |
+            ${{ steps.meta.outputs.tags }}
+            ${{ steps.latest.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

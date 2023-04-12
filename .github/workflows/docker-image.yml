@@ -35,10 +35,10 @@ jobs:
       with:
         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-    - name: Tag latest if master branch
+    - name: Conditionally Tag Latest
       id: latest
       if: ${{ env.BRANCH == 'master' }}
-      run: echo "tags=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest" >> $GITHUB_OUTPUT
+      run: echo "tags=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest" | tr '[:upper:]' '[:lower:]' >> $GITHUB_OUTPUT
 
     - name: Build and Push the Docker Image
       uses: docker/build-push-action@v4

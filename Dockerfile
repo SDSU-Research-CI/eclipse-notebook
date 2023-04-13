@@ -9,6 +9,6 @@ RUN apt-get -y update && \
     touch /usr/share/applications/eclipse.desktop && \
     echo -e "[Desktop Entry]\nVersion = 2023-03\nType = Application\nTerminal = false\nName = Eclipse C/C++\nExec = /opt/eclipse/eclipse\nIcon = /opt/eclipse/icon.xpm\nCategories = Application;" > /usr/share/applications/eclipse.desktop && \
     sudo cp /usr/share/applications/eclipse.desktop /etc/skel/ && \
-    chmod +x /etc/skel/eclipse.desktop
+    sudo chmod +x /etc/skel/eclipse.desktop
 
 USER $NB_USER

@@ -40,6 +40,13 @@ jobs:
       if: ${{ env.BRANCH == 'master' }}
       run: echo "tags=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest" | tr '[:upper:]' '[:lower:]' >> $GITHUB_OUTPUT
 
+    - name: Provision Eclipse Desktop Shortcut
+      run: |
+        touch /usr/share/applications/eclipse.desktop
+        echo -e "[Desktop Entry]\nVersion = 2023-03\nType = Application\nTerminal = false\nName = Eclipse C/C++\nExec = /opt/eclipse/eclipse\nIcon = /opt/eclipse/icon.xpm\nCategories = Application;" > /usr/share/applications/eclipse.desktop
+        cp /usr/share/applications/eclipse.desktop /etc/skel/
+        chmod +x /etc/skel/eclipse.desktop
+
     - name: Build and Push the Docker Image
       uses: docker/build-push-action@v4
       with:

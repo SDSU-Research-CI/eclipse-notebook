@@ -11,7 +11,5 @@ RUN apt-get -y update && \
     mkdir -p /etc/skel/Desktop && \
     cp /usr/share/applications/eclipse.desktop /etc/skel/Desktop/ && \
     chmod +x /etc/skel/Desktop/eclipse.desktop
-    # ln -s /usr/share/applications/eclipse.desktop /etc/skel/Desktop && \
-    # ln -s /usr/share/applications/eclipse.desktop /home/jovyan/Desktop
 
 USER $NB_USER

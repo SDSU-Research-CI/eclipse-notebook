@@ -10,7 +10,7 @@ RUN apt-get -y update && \
     echo -e "[Desktop Entry]\nVersion = 2023-03\nType = Application\nTerminal = false\nName = Eclipse C/C++\nExec = /opt/eclipse/eclipse\nIcon = /opt/eclipse/icon.xpm\nCategories = Application;" > /usr/share/applications/eclipse.desktop && \
     mkdir -p /etc/skel/Desktop && \
     cp /usr/share/applications/eclipse.desktop /etc/skel/Desktop/ && \
-    chmod +x /etc/skel/eclipse.desktop
+    chmod +x /etc/skel/Desktop/eclipse.desktop
     # ln -s /usr/share/applications/eclipse.desktop /etc/skel/Desktop && \
     # ln -s /usr/share/applications/eclipse.desktop /home/jovyan/Desktop
 

@@ -10,7 +10,7 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
   BRANCH: ${{ github.ref_name }}
-  SHORT_SHA: ${{ github.sha }} | slice(0, 7) 
+
 
 jobs:
   build-and-publish:
@@ -41,6 +41,10 @@ jobs:
       if: ${{ env.BRANCH == 'master' }}
       run: echo "tags=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest" | tr '[:upper:]' '[:lower:]' >> $GITHUB_OUTPUT
 
+    - name: Calculate Short SHA
+      id: short_sha
+      run: echo "short_sha = ${{ github.sha }} | slice(0, 7)" >> $GITHUB_OUTPUT
+
     - name: Build and Push the Docker Image
       uses: docker/build-push-action@v4
       with:
@@ -49,5 +53,5 @@ jobs:
           tags: |
             ${{ steps.meta.outputs.tags }}
             ${{ steps.latest.outputs.tags }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.SHORT_SHA }} | tr '[:upper:]' '[:lower:]'
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.short_sha.outputs.short_sha }} | tr '[:upper:]' '[:lower:]'
           labels: ${{ steps.meta.outputs.labels }}

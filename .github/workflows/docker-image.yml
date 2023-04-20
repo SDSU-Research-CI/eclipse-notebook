@@ -53,5 +53,5 @@ jobs:
           tags: |
             ${{ steps.meta.outputs.tags }}
             ${{ steps.latest.outputs.tags }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ (steps.short_sha.outputs.short_sha) | lower }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.short_sha.outputs.short_sha | lower }}
           labels: ${{ steps.meta.outputs.labels }}

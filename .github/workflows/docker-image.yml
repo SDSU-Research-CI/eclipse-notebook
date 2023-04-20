@@ -55,5 +55,7 @@ jobs:
           tags: |
             ${{ steps.meta.outputs.tags }}
             ${{ steps.latest.outputs.tags }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.short_sha }} >> $GITHUB_OUTPUT
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.short_sha }}
           labels: ${{ steps.meta.outputs.labels }}
+      env:
+          GITHUB_OUTPUT: ${{ github.workspace }}/GITHUB_OUTPUT

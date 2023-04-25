@@ -41,11 +41,13 @@ jobs:
       if: ${{ env.BRANCH == 'master' }}
       run: echo "tags=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest" | tr '[:upper:]' '[:lower:]' >> $GITHUB_OUTPUT
 
-    - name: Set Short Git Commit SHA
-      id: vars
-      run: |
-        calculatedSha=$(git rev-parse --short ${{ github.sha }})
-        echo "::set-output name=short_sha::$calculatedSha"
+    - name: Calculate Short Sha
+      id: sha
+      run: echo "sha=${{ github.sha }} | slice(0, 7)" >> $GITHUB_OUTPUT
+
+    - name: Tag With Short Sha
+      id: sha_tag
+      run: echo "sha_tag=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.sha.outputs.sha }}" | tr '[:upper:]' '[:lower:]' >> $GITHUB_OUTPUT
 
     - name: Build and Push the Docker Image
       uses: docker/build-push-action@v4
@@ -55,7 +57,7 @@ jobs:
           tags: |
             ${{ steps.meta.outputs.tags }}
             ${{ steps.latest.outputs.tags }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.short_sha }}
+            ${{ steps.sha_tag.outputs.sha_tag }}
           labels: ${{ steps.meta.outputs.labels }}
       env:
           GITHUB_OUTPUT: ${{ github.workspace }}/GITHUB_OUTPUT

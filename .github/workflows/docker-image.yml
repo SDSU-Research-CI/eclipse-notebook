@@ -36,18 +36,18 @@ jobs:
       with:
         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
+    - name: Calculate Image
+      id: image
+      run: echo "name=${{ env.IMAGE_NAME }}" | tr '[:upper:]' '[:lower:] >> $GITHUB_OUTPUT
+
     - name: Conditionally Tag Latest
       id: latest
       if: ${{ env.BRANCH == 'master' }}
-      run: echo "tags=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest" | tr '[:upper:]' '[:lower:]' >> $GITHUB_OUTPUT
-
-    - name: Calculate Short Sha
-      id: sha
-      run: echo "sha=${{ github.sha }} | slice(0, 7)" >> $GITHUB_OUTPUT
+      run: echo "tags=${{ env.REGISTRY }}/${{ steps.image.outputs.name }}:latest" >> $GITHUB_OUTPUT
 
     - name: Tag With Short Sha
       id: sha_tag
-      run: echo "sha_tag=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.sha.outputs.sha }}" | tr '[:upper:]' '[:lower:]' >> $GITHUB_OUTPUT
+      run: echo "sha_tag=${{ env.REGISTRY }}/${{ steps.image.outputs.name }}:${{ github.sha }}" >> $GITHUB_OUTPUT
 
     - name: Build and Push the Docker Image
       uses: docker/build-push-action@v4

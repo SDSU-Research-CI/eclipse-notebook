@@ -11,7 +11,7 @@ RUN apt-get -y update && \
     chmod +x /usr/share/applications/eclipse.desktop &&\
     touch /etc/novnc.conf &&\
     echo "WebClipboard.enabled: true" >> /etc/novnc.conf &&\
-    echo "SendClipboard=Yes" >> /etc/novnc.conf
+    echo "SendClipboard: both" >> /etc/novnc.conf
 
 
 USER $NB_USER

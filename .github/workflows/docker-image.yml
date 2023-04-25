@@ -38,7 +38,7 @@ jobs:
 
     - name: Calculate Image
       id: image
-      run: echo "name=${{ env.IMAGE_NAME }}" | tr '[:upper:]' '[:lower:] >> $GITHUB_OUTPUT
+      run: echo "name=${{ env.IMAGE_NAME }}" | tr '[:upper:]' '[:lower:]' >> $GITHUB_OUTPUT
 
     - name: Conditionally Tag Latest
       id: latest

@@ -10,7 +10,8 @@ RUN apt-get -y update && \
     echo -e "[Desktop Entry]\nVersion = 2023-03\nType = Application\nTerminal = false\nName = Eclipse C/C++\nExec = /opt/eclipse/eclipse\nIcon = /opt/eclipse/icon.xpm\nCategories = Application;" > /usr/share/applications/eclipse.desktop && \
     chmod +x /usr/share/applications/eclipse.desktop &&\
     touch /etc/novnc.conf &&\
-    echo "WebClipboard.enabled: true" > /etc/novnc.conf
+    echo "WebClipboard.enabled: true" >> /etc/novnc.conf &&\
+    echo "SendClipboard=Yes" >> /etc/novnc.conf
 
 
 USER $NB_USER

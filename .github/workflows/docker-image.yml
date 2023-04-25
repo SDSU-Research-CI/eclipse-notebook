@@ -47,7 +47,7 @@ jobs:
 
     - name: Tag With Short Sha
       id: sha_tag
-      run: echo "sha_tag=${{ env.REGISTRY }}/${{ steps.image.outputs.name }}:${{ github.sha }}" >> $GITHUB_OUTPUT
+      run: echo "sha_tag=${{ env.REGISTRY }}/${{ steps.image.outputs.name }}:$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
     - name: Build and Push the Docker Image
       uses: docker/build-push-action@v4

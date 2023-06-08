@@ -11,6 +11,7 @@ env:
   IMAGE_NAME: ${{ github.repository }}
   BRANCH: ${{ github.ref_name }}
 
+
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
@@ -35,10 +36,18 @@ jobs:
       with:
         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
+    - name: Calculate Image
+      id: image
+      run: echo "name=${{ env.IMAGE_NAME }}" | tr '[:upper:]' '[:lower:]' >> $GITHUB_OUTPUT
+
     - name: Conditionally Tag Latest
       id: latest
       if: ${{ env.BRANCH == 'master' }}
-      run: echo "tags=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest" | tr '[:upper:]' '[:lower:]' >> $GITHUB_OUTPUT
+      run: echo "tags=${{ env.REGISTRY }}/${{ steps.image.outputs.name }}:latest" >> $GITHUB_OUTPUT
+
+    - name: Tag With Short Sha
+      id: sha_tag
+      run: echo "sha_tag=${{ env.REGISTRY }}/${{ steps.image.outputs.name }}:$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
     - name: Build and Push the Docker Image
       uses: docker/build-push-action@v4
@@ -48,4 +57,7 @@ jobs:
           tags: |
             ${{ steps.meta.outputs.tags }}
             ${{ steps.latest.outputs.tags }}
+            ${{ steps.sha_tag.outputs.sha_tag }}
           labels: ${{ steps.meta.outputs.labels }}
+      env:
+          GITHUB_OUTPUT: ${{ github.workspace }}/GITHUB_OUTPUT

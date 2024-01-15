@@ -1,4 +1,4 @@
-FROM gitlab-registry.nrp-nautilus.io/prp/jupyter-stack/desktop
+FROM gitlab-registry.nrp-nautilus.io/prp/jupyter-stack/desktop:v1.3
 
 USER root
 
